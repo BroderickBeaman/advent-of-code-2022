@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Elf {
+public class Elf implements Comparable<Elf> {
 
     private List<Integer> inventory;
 
@@ -18,5 +18,10 @@ public class Elf {
 
     public Integer sumFood() {
         return inventory.stream().reduce(0, Integer::sum);
+    }
+
+    @Override
+    public int compareTo(Elf o) {
+        return this.sumFood().compareTo(o.sumFood());
     }
 }

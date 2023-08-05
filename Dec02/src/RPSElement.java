@@ -4,29 +4,23 @@ public enum RPSElement implements Comparable<RPSElement> {
     SCISSORS(3);
 
     private final int score;
+    private RPSElement win;
+    private RPSElement lose;
 
     RPSElement(int score) {
         this.score = score;
     }
 
+    public void setWin(RPSElement win) {
+        this.win = win;
+    }
+
+    public void setLose(RPSElement lose) {
+        this.lose = lose;
+    }
+
     public int fightScore(RPSElement other) {
-        return switch (this) {
-            case ROCK -> switch (other) {
-                case ROCK -> 3;
-                case PAPER -> 0;
-                case SCISSORS -> 6;
-            };
-            case PAPER -> switch (other) {
-                case ROCK -> 6;
-                case PAPER -> 3;
-                case SCISSORS -> 0;
-            };
-            case SCISSORS -> switch (other) {
-                case ROCK -> 0;
-                case PAPER -> 6;
-                case SCISSORS -> 3;
-            };
-        };
+        return other.equals(this.lose) ? 0 : other.equals(win) ? 6 : 3;
     }
 
     public int totalScore(RPSElement other) {
@@ -35,10 +29,28 @@ public enum RPSElement implements Comparable<RPSElement> {
 
     public static RPSElement fromString(String input) {
         return switch (input) {
-            case "A", "X" -> ROCK;
-            case "B", "Y" -> PAPER;
-            case "C", "Z" -> SCISSORS;
-            default -> throw new IllegalArgumentException("Unsupported value: " + input);
+            case "A" -> ROCK;
+            case "B" -> PAPER;
+            case "C" -> SCISSORS;
+            default -> throw new IllegalArgumentException("Unsupported string: " + input);
         };
+    }
+
+    public RPSElement fromStrategyString(String strat) {
+        return switch (strat) {
+            case "X" -> this.win;
+            case "Y" -> this;
+            case "Z" -> this.lose;
+            default -> throw new IllegalArgumentException("Unsupported strat: " + strat);
+        };
+    }
+
+    static {
+        ROCK.setWin(SCISSORS);
+        ROCK.setLose(PAPER);
+        PAPER.setWin(ROCK);
+        PAPER.setLose(SCISSORS);
+        SCISSORS.setWin(PAPER);
+        SCISSORS.setLose(ROCK);
     }
 }

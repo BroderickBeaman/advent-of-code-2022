@@ -15,8 +15,9 @@ public class FightsLoader {
 
         return allLines.stream()
             .map(line -> {
-                RPSElement me = RPSElement.fromString(line.substring(2, 3));
                 RPSElement other = RPSElement.fromString(line.substring(0, 1));
+                RPSElement me = other.fromStrategyString(line.substring(2, 3));
+
                 return new Fight(me, other);
             }).collect(Collectors.toList());
     }

@@ -12,7 +12,7 @@ public class ElfShift {
         this.max2 = max2;
     }
 
-    public boolean containsOverlap() {
+    public boolean containsCompleteOverlap() {
         int left = min1 - min2;
         int right = max1 - max2;
 
@@ -24,5 +24,9 @@ public class ElfShift {
         // if both sides have opposite parity, we should have complete overlap
         // (A negative number divided by a positive one, or vice versa, will result in a negative number)
         return ((double) left / (double) right) < 0;
+    }
+
+    public boolean containsPartialOverlap() {
+        return !(max1 < min2 || max2 < min1);
     }
 }
